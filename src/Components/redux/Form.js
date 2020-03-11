@@ -1,5 +1,5 @@
 import React from 'react';
-import {AddProductCRUD} from '../../actions/action'
+import {AddProductCRUD} from '../../Actions/action'
 import {connect} from 'react-redux'
 
 

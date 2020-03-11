@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const axiosWithAuth = () => {
+const axiosWithAuth = () => {
     const token = localStorage.getItem('token');
     return axios.create({ 
         baseURL: "https://african-marketplace-bw-1.herokuapp.com/api/",
@@ -9,3 +9,5 @@ export const axiosWithAuth = () => {
         }
     })
 }
+
+export default axiosWithAuth

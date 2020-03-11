@@ -10,41 +10,14 @@ import {
     Add_Product_Start, Add_Product_Success, Add_Product_Fail,
 
     Delete_Product_Start, Delete_Product_Success, Delete_Product_Fail
-} from '../actions/action'
+} from '../Actions/action'
 
 
 const initial = {
-    info : {
-        id: '',
-        name: '',
-        password: '',
-        phone: '',
-        email: '',
-        location: ''
-    },
-    login: {
-        name: '',
-        password: ''
-    },
+    info : false,
+    login: false,
     error: '',
-    products : [
-        {
-        id: 1,
-        location: 'Kenya',
-        category: 'Clothes',
-        item: 'Blue Shirt Medium',
-        description: 'Bell Cuff Long Sleeve Shirt',
-        price: '2103.434'
-        },
-        {
-        id: 2,
-        location: 'South Africa',
-        category: 'Clothes',
-        item: 'Black Shirt Medium',
-        description: 'Large V-Neck Short Sleeve Shirt',
-        price: '2305.150'
-        }
-    ]
+    products : []
 
 }
 
@@ -101,7 +74,7 @@ const reducer = (state = initial, action )  => {
             ...state, isFetching: true, error: ''
         }
         case Delete_Product_Success: return {
-            ...state, products : action.payload, isFetching: false, error: ''
+            ...state, products : state.products.filter(product => product.id !== action.payload), isFetching: false, error: ''
         }
         case Delete_Product_Fail: return {
             ...state, error: action.payload

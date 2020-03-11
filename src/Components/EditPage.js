@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import axiosWithAuth from './withAuth/axiosWithAuth'
+import axiosWithAuth from '../Components/redux/withAuth/AxiosWithAuth'
+import {connect} from 'react-redux';
+import {EditProductCRUD} from '../Actions/action'
 
 const EditProduct = () => {
     
@@ -14,42 +16,32 @@ const EditProduct = () => {
             setAllProduct(res.data)
         })
         .catch(err => console.log(err))
+        
     },[])
+
+    const editProduct = product => {
+        // product.preventDefault()
+        setProductToEdit(product)
+
+    } 
 
 
     const putProduct = e => {
         e.preventDefault()
         axiosWithAuth().put(`/inputs/${productToEdit.id}`, productToEdit)
-        .then(res => {
-            setProductToEdit(allProduct.map(product => {
-                if (product.id === res.data.id) {
-                    console.log('SUCCESS')
-                    setProductToEdit({ })
-                    return res.data
-                } else {
-                    console.log('ERROR')
-                    return product
-                }}))})
+        .then(() => {
+            axiosWithAuth().get(`/inputs`)
+            .then(res => setAllProduct(res.data))
+            
+        })
         .catch(err => console.log('Error, Product Not Edited', err))
+
     } 
 
 
     return (
         <div>
-            {allProduct.map(product => {
-                return (
-                    <div key={product.id}>
-                    {product.id}
-                    {product.item}
-                    {product.description}
-                    {product.category}
-                    {product.price}
-                    {product.location}
-                    <button onClick={() => editProduct(product)}>edit</button>
-                    </div>
-                )
-            })}
-
+            {console.log(productToEdit)}
                 <form onSubmit={putProduct}>
                 <input 
                 type='text'
@@ -99,17 +91,36 @@ const EditProduct = () => {
                 onChange={e => setProductToEdit({...productToEdit, price: e.target.value})}
 
                 />
-
                 <button> Submit </button>
 
 
-
             </form>
+
+            {allProduct.map(product => {
+                return (
+                    <div key={product.id}>
+                    {product.id}
+                    {product.item}
+                    {product.description}
+                    {product.category}
+                    {product.price}
+                    {product.location}
+                    <button onClick={() => editProduct(product)}>edit</button>
+                    </div>
+                )
+            })}
 
         </div>
 
     )
 }
 
+const map = state => ({
+    product: state.product,
+    error: state.error
+})
 
-export default EditProduct
+
+export default connect(
+    map, {EditProductCRUD}
+)(EditProduct)

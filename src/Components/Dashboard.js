@@ -94,29 +94,37 @@ function Dashboard() {
             className = "link-box">
             <h3>Add Product</h3>
             <p>Add product to your listings</p>
-            <img src = {listingsicon} />
+            <img src = {listingsicon} alt='listing' />
 
             </Link>
         <Link to = "/Listings" 
             className = "link-box">
             <h3>Listings</h3>      
             <p>All of your listings in one place</p>      
-            <img src = {producticon}/>
-         </Link>
+            <img src = {producticon} alt='product'/>
+        </Link>
+
+        <Link to = "/update" 
+            className = "link-box">
+            <h3>Update Product</h3>      
+            <p>Edit All of your listings in one place</p>      
+            <img src = {producticon} alt='update' />
+        </Link>
+
         </LeftLinks>
         <RightLinks>
         <Link to = "/MarketPrice"
-             className = "link-box">
-             <h3>Market Prices</h3>
-             
-             <p>Compare current market prices</p>
-             <img src = {marketpriceicon} />
-             </Link>
+            className = "link-box">
+            <h3>Market Prices</h3>
+            
+            <p>Compare current market prices</p>
+            <img src = {marketpriceicon} alt='market' />
+        </Link>
         <Link to = "/Profile" 
             className = "link-box">
             <h3>Profile</h3>
             <p>Edit and update your profile</p>
-            <img src = {profileicon}/>
+            <img src = {profileicon} alt='profile' />
             </Link>
         </RightLinks>
         

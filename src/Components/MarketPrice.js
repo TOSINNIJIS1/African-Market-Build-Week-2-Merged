@@ -13,13 +13,9 @@ function MarketPrice()  {
     const [marketItems, setMarketItems] = useState([]);
     useEffect(()=>{
         const getItems = () =>{
+            axios.get('https://african-marketplace-bw-1.herokuapp.com/api/inputs',{
+            })
             
-            
-             axios.get('https://african-marketplace-bw-1.herokuapp.com/api/inputs',{
-            
-            
-            
-             })
             .then(response =>{
                 console.log("Response Data", response);
                 setMarketItems(response.data);
@@ -28,7 +24,7 @@ function MarketPrice()  {
             .catch(error=>console.log(error));
         }
         getItems();
-    }, [])
+    },[])
     console.log("Market Items ", marketItems)
      
     const [searchCat, setSearchCat] = useState('');
@@ -62,7 +58,7 @@ function MarketPrice()  {
         });
         setSearchResults(results);
         
-    }, [searchItem,searchLoc,searchCat]);
+    }, [searchItem,searchLoc,searchCat, marketItems]);
 
     // const buttonHandler = (results) =>{
     //     console.log(results)

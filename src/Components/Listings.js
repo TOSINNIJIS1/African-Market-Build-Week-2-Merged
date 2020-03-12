@@ -1,26 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React from 'react';
+import {connect} from 'react-redux'
+import {ProductCRUD, DeleteProductCRUD, EditProductCRUD} from '../Actions/action'
 import {Link} from 'react-router-dom';
 import styled from "styled-components";
 import ItemCard from "./ItemCard";
 
-export default function Listings() {
+function Listings(props) {
 
-  const [product, setProduct] = useState([]);
+  const GetonSubmit = e => {
+    e.preventDefault();
+    props.ProductCRUD();
+  }
 
-  useEffect(() => {
-  
-    axios
-      .get("https://african-marketplace-bw-1.herokuapp.com/api/inputs")
-      .then(response => {
-        setProduct(response.data);
-        console.log(response);
-      })
-      .catch(error => {
-        console.log("The data was not returned", error);
-      });
+  const onDelete = id => {
+    console.log('id', id)
+    props.DeleteProductCRUD(id)
+  }
 
-  }, []);
 
   const ListContainer = styled.section `
     display:flex;
@@ -54,24 +50,50 @@ export default function Listings() {
   return (
 
     
-    <ListContainer>
-         <TopBar>
-             <h2>Sauti.</h2>  
-            <TopBarLink>
-            <Link to = "/DashBoard">Home</Link>
-            </TopBarLink>
-             
-             </TopBar>
+  <ListContainer>
+        <TopBar>
+            <h2>Sauti.</h2>  
+          <TopBarLink>
+          <Link to = "/DashBoard">Home</Link>
+          </TopBarLink>
+            
+        </TopBar>
 
-      {console.log(product)}
-        
+        <div>
+            {console.log(props.products)}
+            {props.isFetching ? (
+                <div> Products Loading... </div>
+            ): (<button onClick={GetonSubmit}> Products </button>)}
+            
+            <div>
+            {props.products.map((product) => {
+              return(
 
-      {product.map(product => 
+                <div>
+                  
         
-        <ItemCard key = {product.id} idata = {product}/>
-         
+        <ItemCard key = {product.id} idata = {product} />
+        <button onClick={() => {onDelete(product.id)}}>Delete</button>
+
+        </div>
+              )  
         
-      )}
-    </ListContainer>
+            })}  
+              
+            </div>
+            </div>
+            </ListContainer>
+            
   );
 }
+
+const map = state => ({
+  products: state.products,
+  error: state.error,
+  isFetching: state.isFetching
+})
+
+
+export default connect(
+  map, {ProductCRUD, DeleteProductCRUD, EditProductCRUD}
+)(Listings)

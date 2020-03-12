@@ -1,85 +1,85 @@
-import React, { useState } from "react";
-import axios from "axios";
-import './AddProduct.css';
-// import Popup from './Popup.js'
+import React, { useState } from 'react'
+import {connect} from 'react-redux'
+import {AddProductCRUD} from '../Actions/action'
 
-function AddProduct() {
-  const [product, setProduct] = useState({ id: "", location: "", category: "", item: "", description: "", price: "" });
+const AddProducts = (props) => {
 
-  const handleChange = event => {
-    setProduct({ ...product, [event.target.name]: event.target.value });
-  };
+    const [add, setAdd] = useState({
+        location: '',
+        category: '',
+        item: '',
+        description: '',
+        price: ''
+    })
 
-  const handleSubmit = event => {
-    event.preventDefault();
-    setProduct({ location: '', category: '', item: '', description: '', price: '' });
+    const onHandle = e => {
+        setAdd({
+            [e.target.name]: e.target.value
+        })
+    }
 
-    axios
-      .post("https://african-marketplace-bw-1.herokuapp.com/api/inputs", product)
-      .then(response => {
-        console.log(response);
-        // console.log(response.data);
-        setProduct(response.data);
-      })
-      .catch(err => console.log(err.response));
-  };
+
+    const onSubmit = e => {
+        e.preventDefault();
+        props.AddProductCRUD(add)
+        setAdd({...add})
+    }
+
 
   return (
     <div className="add-product">
-      {console.log(product)}
       <div className="add-product-left">
         <h1>Sauti</h1>
         <h2>Add a product</h2>
       </div>
-      <form onSubmit={event => handleSubmit(event)} className="add-product-right">
-        <label>
-          Location:
-          <input
-            type="text"
-            name="location"
-            value={product.location}
-            onChange={event => handleChange(event)}
-          />
-        </label>
-        <label>
-          Category:
-          <input
-            type="text"
-            name="category"
-            value={product.category}
-            onChange={event => handleChange(event)}
-          />
-        </label>
-        <label>
-          Item:
-          <input
-            type="text"
-            name="item"
-            value={product.item}
-            onChange={event => handleChange(event)}
-          />
-        </label>
-        <label>
-          Description:
-          <input
-            type="text"
-            name="description"
-            value={product.description}
-            onChange={event => handleChange(event)}
-          />
-        </label>
-        <label>
-          Price:
-          <input
-            type="number"
-            name="price"
-            value={product.price}
-            onChange={event => handleChange(event)}
-          />
-        </label>
-        <button type="submit"> 
-          Add Product
-        </button>
+      <form onSubmit={onSubmit}>
+                <input 
+                type="text"
+                name="location"
+                value={add.location}
+                onChange={onHandle}
+                placeholder='location'
+                
+                />
+
+                <input 
+                type="text"
+                name="item"
+                value={add.item}
+                onChange={onHandle}
+                placeholder='item'
+                
+                />
+
+                <input 
+                type="text"
+                name="description"
+                placeholder="description"
+                value={add.description}
+                onChange={onHandle}
+                
+                />
+
+                <input 
+                type="text"
+                name="price"
+                placeholder="Price"
+                value={add.price}
+                onChange={onHandle}
+                
+                />
+
+                <input 
+                type="text"
+                name="category"
+                placeholder="Category"
+                value={add.category}
+                onChange={onHandle}
+                
+                />
+
+        <button onClick={onSubmit}> Add Product </button>
+
         {/* <div className="button">
           <Popup />
         </div> */}
@@ -88,4 +88,13 @@ function AddProduct() {
   );
 }
 
-export default AddProduct;
+const map = state => ({
+  products: state.products,
+  error: state.error,
+  isFetching: state.isFetching
+})
+
+
+export default connect(
+  map, {AddProductCRUD}
+)(AddProducts)

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import axiosWithAuth from '../Utils/axiosWithAuth'
 
 export const Post_Login_Start = 'Post_Login_Start';
 export const Post_Login_Success = 'Post_Login_Success';
@@ -119,20 +120,22 @@ export const AddProductCRUD = add => dispatch => {
     })
 }
 
-export const DeleteProductCRUD = del => dispatch => {
+export const DeleteProductCRUD = (id) => dispatch => {
     dispatch({
         type: Delete_Product_Start
     })
-    axios.delete(`https://african-marketplace-bw-1.herokuapp.com/api/inputs/:id`, del)
+    axiosWithAuth().delete(`/inputs/${id}`, {
+        method: 'DELETE'
+    })
     .then(res => {
-        console.log('Delete INFO', res)
-        dispatch({
-            type: Delete_Product_Success, payload: res
-        })
+        console.log('Delete INFO', res.data)
+            dispatch({
+                type: Delete_Product_Success, payload: id
+            })
     })
     .catch(err => {
         dispatch({
-            type: Delete_Product_Fail, payload: err
+            type: Delete_Product_Fail, payload: err.data
         })
     })
 }
